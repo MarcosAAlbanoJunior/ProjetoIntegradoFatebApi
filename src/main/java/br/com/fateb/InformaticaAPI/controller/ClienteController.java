@@ -24,7 +24,7 @@ public class ClienteController {
 
     @Operation(summary = "Retorna um Cliente com o iD informado")
     @GetMapping("/{id}")
-    public ResponseEntity<Cliente> getByCpf(@PathVariable("id") Long id) {
+    public ResponseEntity<Cliente> getByCpf(@PathVariable("id") Integer id) {
         Cliente cliente = service.getClienteById(id);
         return ResponseEntity.ok(cliente);
     }
@@ -43,10 +43,4 @@ public class ClienteController {
         return ResponseEntity.status(HttpStatus.CREATED).body(cliente);
     }
 
-    @Operation(summary = "Atualiza um Cliente")
-    @PutMapping("/{id}")
-    public ResponseEntity<Void> atualizarCliente(@PathVariable Long id, @RequestBody ClienteRequest request) {
-        service.atualizar(id, request);
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
-    }
 }

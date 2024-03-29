@@ -1,20 +1,17 @@
 package br.com.fateb.InformaticaAPI.dto.request;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.Value;
 
-@Data
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
-public class ClienteRequest {
+import java.io.Serializable;
 
-    private String nomeCliente;
-
-    private String cpf;
-
-    private Long cidade;
-
+/**
+ * DTO for {@link br.com.fateb.InformaticaAPI.entity.Cliente}
+ */
+@Value
+public class ClienteRequest implements Serializable {
+    String nomeCliente;
+    String documento;
+    String email;
+    String endereco;
+    Integer idCidade;
 }

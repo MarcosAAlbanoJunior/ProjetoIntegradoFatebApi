@@ -29,24 +29,14 @@ public class ClienteService {
     @Transactional
     public Cliente cadastrar(ClienteRequest request) {
 
-        Cidade cidade = cidadeRepository.findById(request.getCidade()).orElseThrow(() -> new NotFoundException("Cidade não encontrada"));
+        Cidade cidade = cidadeRepository.findById(request.getIdCidade()).orElseThrow(() -> new NotFoundException("Cidade não encontrada"));
 
         Cliente cliente = ClienteMapper.INSTANCE.requestToEntity(request);
-        cliente.setCidade(cidade);
+        cliente.setIdCidade(cidade);
         return  repositoy.saveAndFlush(cliente);
     }
 
-    @Transactional
-    public void atualizar(Long id, ClienteRequest request) {
-
-        repositoy.findById(id).orElseThrow(() -> new NotFoundException("Cliente não encontrado"));
-
-        Cliente cliente = ClienteMapper.INSTANCE.requestToEntity(request);
-
-        repositoy.updateClienteById(id, cliente.getNomeCliente(), cliente.getCpf(), cliente.getCidade().getIdCidade());
-    }
-
-    public Cliente getClienteById(Long id){
+    public Cliente getClienteById(Integer id){
         return repositoy.findById(id).orElseThrow(() -> new NotFoundException("Cliente não encontrado"));
     }
 

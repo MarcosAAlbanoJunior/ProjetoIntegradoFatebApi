@@ -31,6 +31,6 @@ public class Produto {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_fornecedor")
-    private Fornecedore idFornecedor;
+    private Fornecedor idFornecedor;
 
 }
