@@ -29,7 +29,7 @@ public class Usuario {
     @Column(name = "endereco")
     private String endereco;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_empresa")
     private Empresa idEmpresa;
 

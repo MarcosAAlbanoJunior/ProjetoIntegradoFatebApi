@@ -16,12 +16,12 @@ public class ProdutosVenda {
     private ProdutosVendaId id;
 
     @MapsId("idProduto")
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "id_produto", nullable = false)
     private Produto idProduto;
 
     @MapsId("idVenda")
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "id_venda", nullable = false)
     private Venda idVenda;
 

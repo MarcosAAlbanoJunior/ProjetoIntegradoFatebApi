@@ -31,7 +31,7 @@ public class ClienteController {
 
     @Operation(summary = "Retorna todos os clientes")
     @GetMapping
-    public ResponseEntity<List<Cliente>> getAlunos() {
+    public ResponseEntity<List<Cliente>> getClientes() {
         List<Cliente> clientes = service.getAllClientes();
         return ResponseEntity.ok(clientes);
     }

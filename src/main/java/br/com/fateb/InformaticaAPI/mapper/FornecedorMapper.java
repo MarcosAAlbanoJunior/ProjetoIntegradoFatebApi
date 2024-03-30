@@ -13,5 +13,6 @@ public abstract class FornecedorMapper {
 
     public static final FornecedorMapper INSTANCE = Mappers.getMapper(FornecedorMapper.class);
 
+    @Mapping(target = "id", ignore = true)
     public abstract Fornecedor requestToEntity(FornecedorRequest request);
 }

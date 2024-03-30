@@ -1,14 +1,9 @@
 package br.com.fateb.InformaticaAPI.service;
 
-import br.com.fateb.InformaticaAPI.dto.request.ClienteRequest;
 import br.com.fateb.InformaticaAPI.dto.request.ProdutoRequest;
 import br.com.fateb.InformaticaAPI.entity.*;
 import br.com.fateb.InformaticaAPI.exception.NotFoundException;
-import br.com.fateb.InformaticaAPI.mapper.ClienteMapper;
 import br.com.fateb.InformaticaAPI.mapper.ProdutoMapper;
-import br.com.fateb.InformaticaAPI.repository.CidadeRepository;
-import br.com.fateb.InformaticaAPI.repository.ClienteRepository;
-import br.com.fateb.InformaticaAPI.repository.FornecedorRepository;
 import br.com.fateb.InformaticaAPI.repository.ProdutoRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,9 +30,9 @@ public class ProdutoService {
     @Transactional
     public Produto cadastrar(ProdutoRequest request) {
 
-        Fornecedor fornecedor = fornecedorService.getFornecedorById(request.getIdFornecedor());
+        Fornecedor fornecedor = fornecedorService.getFornecedorById(request.idFornecedor());
 
-        Categoria categoria = categoriaService.getCategoriaById(request.getIdCategoria());
+        Categoria categoria = categoriaService.getCategoriaById(request.idCategoria());
 
         Produto produto = ProdutoMapper.INSTANCE.requestToEntity(request);
         produto.setIdFornecedor(fornecedor);

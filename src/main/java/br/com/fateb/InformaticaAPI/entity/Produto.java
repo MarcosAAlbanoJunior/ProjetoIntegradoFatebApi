@@ -13,7 +13,7 @@ import java.math.BigDecimal;
 public class Produto {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_produto", nullable = false)
+    @Column(name = "id_produto")
     private Integer id;
 
     @Column(name = "nome_produto")
@@ -25,11 +25,11 @@ public class Produto {
     @Column(name = "quantidadeEstoque")
     private Integer quantidadeEstoque;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_categoria")
     private Categoria idCategoria;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_fornecedor")
     private Fornecedor idFornecedor;
 

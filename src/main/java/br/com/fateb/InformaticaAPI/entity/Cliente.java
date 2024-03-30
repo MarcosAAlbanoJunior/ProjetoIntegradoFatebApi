@@ -26,7 +26,7 @@ public class Cliente {
     @Column(name = "endereco")
     private String endereco;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_cidade")
     private Cidade idCidade;
 

@@ -29,7 +29,7 @@ public class ClienteService {
     @Transactional
     public Cliente cadastrar(ClienteRequest request) {
 
-        Cidade cidade = cidadeRepository.findById(request.getIdCidade()).orElseThrow(() -> new NotFoundException("Cidade não encontrada"));
+        Cidade cidade = cidadeRepository.findById(request.idCidade()).orElseThrow(() -> new NotFoundException("Cidade não encontrada"));
 
         Cliente cliente = ClienteMapper.INSTANCE.requestToEntity(request);
         cliente.setIdCidade(cidade);

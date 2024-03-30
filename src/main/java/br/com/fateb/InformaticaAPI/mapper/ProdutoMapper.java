@@ -15,5 +15,6 @@ public abstract class ProdutoMapper {
 
     @Mapping(target = "idCategoria", ignore = true)
     @Mapping(target = "idFornecedor", ignore = true)
+    @Mapping(target = "id", ignore = true)
     public abstract Produto requestToEntity(ProdutoRequest request);
 }

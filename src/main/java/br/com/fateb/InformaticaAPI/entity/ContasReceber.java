@@ -17,7 +17,7 @@ public class ContasReceber {
     @Column(name = "id_conta", nullable = false)
     private Integer id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_venda")
     private Venda idVenda;
 
