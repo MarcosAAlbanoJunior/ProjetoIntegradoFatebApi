@@ -1,6 +1,7 @@
 package br.com.fateb.InformaticaAPI.controller;
 
 
+import br.com.fateb.InformaticaAPI.dto.response.ContasReceberResponse;
 import br.com.fateb.InformaticaAPI.entity.ContasReceber;
 import br.com.fateb.InformaticaAPI.service.ContasReceberService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -24,8 +25,8 @@ public class ContasReceberController {
 
     @Operation(summary = "Retorna um ContasReceber com o iD informado")
     @GetMapping("/{id}")
-    public ResponseEntity<ContasReceber> getByCpf(@PathVariable("id") Integer id) {
-        ContasReceber contasReceber = service.getContasReceberById(id);
+    public ResponseEntity<ContasReceberResponse> getByCpf(@PathVariable("id") Integer id) {
+        ContasReceberResponse contasReceber = service.getContasReceberById(id);
         return ResponseEntity.ok(contasReceber);
     }
 
