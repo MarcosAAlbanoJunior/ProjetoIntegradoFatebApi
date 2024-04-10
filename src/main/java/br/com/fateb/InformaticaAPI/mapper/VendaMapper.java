@@ -16,13 +16,15 @@ public abstract class VendaMapper {
 
     @Mapping(target = "idCliente", ignore = true)
     @Mapping(target = "idUsuario", ignore = true)
+    @Mapping(target = "tipoPagamento", source = "tipoPagamento")
     public abstract Venda requestToEntity(VendaRequest request);
 
     @Mapping(target = "cliente", source = "idCliente" )
     @Mapping(target = "cliente.idCliente", source = "idCliente.id" )
     @Mapping(target = "usuario", source = "idUsuario")
     @Mapping(target = "usuario.idUsuario", source = "idUsuario.id")
-    @Mapping(target = "usuario.idEmpresa", source = "idUsuario.idEmpresa.id")
+    @Mapping(target = "parcelas", source = "parcelas")
+    @Mapping(target = "tipoPagamento", source = "tipoPagamento")
     public abstract VendaResponse entityToResponse(Venda entity);
 
 

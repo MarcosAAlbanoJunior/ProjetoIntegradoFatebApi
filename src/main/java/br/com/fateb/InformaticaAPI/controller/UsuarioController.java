@@ -1,5 +1,6 @@
 package br.com.fateb.InformaticaAPI.controller;
 
+import br.com.fateb.InformaticaAPI.dto.request.ComissaoRequest;
 import br.com.fateb.InformaticaAPI.dto.request.UsuarioRequest;
 import br.com.fateb.InformaticaAPI.entity.Usuario;
 import br.com.fateb.InformaticaAPI.service.UsuarioService;
@@ -42,5 +43,6 @@ public class UsuarioController {
         Usuario usuario = service.cadastrar(request);
         return ResponseEntity.status(HttpStatus.CREATED).body(usuario);
     }
+
 
 }

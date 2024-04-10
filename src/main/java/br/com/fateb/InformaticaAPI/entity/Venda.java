@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.math.BigDecimal;
 import java.time.Instant;
 
 @Getter
@@ -26,5 +27,11 @@ public class Venda {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_usuario")
     private Usuario idUsuario;
+
+    @Column(name = "tipo_pagamento")
+    private String tipoPagamento;
+
+    @Column(name = "parcelas")
+    private Integer parcelas;
 
 }

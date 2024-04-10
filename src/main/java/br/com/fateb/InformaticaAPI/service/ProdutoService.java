@@ -41,6 +41,16 @@ public class ProdutoService {
         return  repositoy.saveAndFlush(produto);
     }
 
+    @Transactional
+    public void adicionarProduto(Integer idProduto, Integer quantidade){
+        repositoy.adicionarProduto(idProduto, quantidade);
+    }
+
+    @Transactional
+    public void subtrairProduto(Integer idProduto, Integer quantidade){
+        repositoy.subtrairProduto(idProduto, quantidade);
+    }
+
     public Produto getProdutoById(Integer id){
         return repositoy.findById(id).orElseThrow(() -> new NotFoundException("Produto não encontrado"));
     }

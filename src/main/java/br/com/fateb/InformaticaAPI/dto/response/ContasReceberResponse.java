@@ -22,7 +22,7 @@ public class ContasReceberResponse {
 
     private UsuarioResponse usuario;
 
-    private List<ProdutoResponse> produtosVenda;
+    private Integer valorParcela;
 
     private BigDecimal valorTotal;
 
@@ -30,7 +30,7 @@ public class ContasReceberResponse {
 
     private Instant dataVencimento;
 
-    private String statusPagamento;
+    private String status;
 
 
 }

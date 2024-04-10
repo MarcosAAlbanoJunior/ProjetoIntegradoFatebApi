@@ -20,6 +20,10 @@ public class MovimentoEstoque {
     @JoinColumn(name = "tipo_movimento")
     private TipoMovimento tipoMovimento;
 
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "id_produto", nullable = false)
+    private Produto idProduto;
+
     @Column(name = "quantidade")
     private Integer quantidade;
 

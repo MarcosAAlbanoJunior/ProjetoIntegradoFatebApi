@@ -13,5 +13,6 @@ public class VendaResponse {
     private Instant dataVenda;
     private ClienteResponse cliente;
     private UsuarioResponse usuario;
-    private Integer idContasReceber;
+    private String tipoPagamento;
+    private Integer parcelas;
 }

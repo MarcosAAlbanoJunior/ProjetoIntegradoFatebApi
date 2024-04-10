@@ -21,13 +21,20 @@ public class ContasReceber {
     @JoinColumn(name = "id_venda")
     private Venda idVenda;
 
-    @Column(name = "valor", precision = 10, scale = 2)
-    private BigDecimal valor;
+    @Column(name = "valor_total", precision = 10, scale = 2)
+    private BigDecimal valorTotal;
+
+    @Column(name = "valor_parcela", precision = 10, scale = 2)
+    private BigDecimal valorParcela;
+
 
     @Column(name = "data_vencimento")
     private Instant dataVencimento;
 
     @Column(name = "status_pagamento")
     private String statusPagamento;
+
+    @Column(name = "comissao_venda")
+    private BigDecimal comissaoVenda;
 
 }

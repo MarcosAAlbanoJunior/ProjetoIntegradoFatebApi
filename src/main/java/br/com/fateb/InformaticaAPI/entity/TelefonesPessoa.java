@@ -7,8 +7,8 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name = "telefones_clientes")
-public class TelefonesCliente {
+@Table(name = "telefones_pessoas")
+public class TelefonesPessoa {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_telefone", nullable = false)
@@ -17,8 +17,10 @@ public class TelefonesCliente {
     @Column(name = "numero_telefone")
     private String numeroTelefone;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "id_cliente")
-    private Cliente idCliente;
+    @Column(name = "tipo_pessoa")
+    private String tipoPessoa;
+
+    @Column(name = "id_pessoa")
+    private Integer idPessoa;
 
 }
