@@ -9,14 +9,11 @@ import lombok.Setter;
 @Entity
 @Table(name = "perfil_usuario")
 public class PerfilUsuario {
-    @Id
-    @Column(name = "id_usuario", nullable = false)
-    private Integer id;
 
-    @MapsId
-    @OneToOne(fetch = FetchType.EAGER, optional = false)
-    @JoinColumn(name = "id_usuario", nullable = false)
-    private Usuario usuarios;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_tipo_usuario", nullable = false)
+    private Integer id;
 
     @Column(name = "tipo_usuario")
     private String tipoUsuario;
