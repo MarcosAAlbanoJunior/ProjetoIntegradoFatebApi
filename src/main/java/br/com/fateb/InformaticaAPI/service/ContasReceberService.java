@@ -1,6 +1,7 @@
 package br.com.fateb.InformaticaAPI.service;
 
 import br.com.fateb.InformaticaAPI.dto.request.VendaRequest;
+import br.com.fateb.InformaticaAPI.dto.response.ComissaoResponse;
 import br.com.fateb.InformaticaAPI.dto.response.ContasReceberResponse;
 import br.com.fateb.InformaticaAPI.dto.response.ProdutoResponse;
 import br.com.fateb.InformaticaAPI.entity.*;
@@ -42,17 +43,38 @@ public class ContasReceberService {
         List<ProdutosVenda> produtosVendas = produtoVendaService.getProdutosVendaPeloIdVenda(response.getIdVenda());
 
         List<ProdutoResponse> listaProdutoResponse = new ArrayList<>();
-        
+
         for(ProdutosVenda produtosVenda : produtosVendas){
             listaProdutoResponse.add(ProdutoVendaMapper.INSTANCE.entityToResponse(produtosVenda));
         }
-
-        response.setProdutosVenda(listaProdutoResponse);
 
         return response;
     }
 
     public List<ContasReceber> getAllContasReceber() {
         return repository.findAll();
+    }
+
+    public List<ContasReceberResponse> getAllContasReceberResponse() {
+
+        List<ContasReceber> listaEntities = repository.findAll();
+        List<ContasReceberResponse> resposta = new ArrayList<>();
+        ContasReceberResponse itemLista = new ContasReceberResponse();
+
+        for(ContasReceber x : listaEntities) {
+            itemLista = ContasReceberMapper.INSTANCE.entityToResponse(x);
+            resposta.add(itemLista);
+        }
+
+        return resposta;
+    }
+
+    public List<ComissaoResponse> buscarComissoesData(String data){
+
+        String[] partes = data.split("-");
+        int ano = Integer.parseInt(partes[0]);
+        int mes = Integer.parseInt(partes[1]);
+
+        return repository.findComissaoPorUsuarioNoMesEAno(ano, mes);
     }
 }

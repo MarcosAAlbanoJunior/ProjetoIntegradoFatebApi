@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.List;
@@ -27,18 +28,22 @@ public class VendaService {
 
     private ClienteService clienteService;
 
+    private MovimentacaoEstoqueService movimentacaoEstoqueService;
+
 
     private ContasReceberRepository contasReceberRepository;
 
 
     @Autowired
     public void VendaRepository(VendaRepository repositoy, UsuarioService usuarioService, ProdutoVendaService produtoVendaService,
-                                ClienteService clienteService, ContasReceberRepository contasReceberRepository) {
+                                ClienteService clienteService, ContasReceberRepository contasReceberRepository,
+                                MovimentacaoEstoqueService movimentacaoEstoqueService) {
         this.repositoy = repositoy;
         this.usuarioService = usuarioService;
         this.clienteService = clienteService;
         this.contasReceberRepository = contasReceberRepository;
         this.produtoVendaService = produtoVendaService;
+        this.movimentacaoEstoqueService = movimentacaoEstoqueService;
     }
 
     @Transactional
@@ -52,7 +57,8 @@ public class VendaService {
         venda.setIdCliente(cliente);
         venda.setIdUsuario(usuario);
         venda.setDataVenda(Instant.now());
-
+        venda.setParcelas(request.parcelas());
+        venda.setTipoPagamento(request.tipoPagamento());
         venda = repositoy.saveAndFlush(venda);
 
         Venda finalVenda = venda;
@@ -60,15 +66,13 @@ public class VendaService {
 
             produtoVendaService.cadastrar(finalVenda.getId(), produtoVenda);
 
+            movimentacaoEstoqueService.cadastrar(produtoVenda.idProduto(), 2, produtoVenda.quantidade(), Instant.now());
+
         });
 
-        var contasReceber = cadastrarContasReceber(venda);
+        cadastrarContasReceber(venda);
 
-        VendaResponse resposta = VendaMapper.INSTANCE.entityToResponse(venda);
-
-        resposta.setIdContasReceber(contasReceber.getId());
-
-        return  resposta;
+        return  VendaMapper.INSTANCE.entityToResponse(venda);
     }
 
     public Venda getVendaById(Integer id){
@@ -80,7 +84,7 @@ public class VendaService {
     }
 
     @Transactional
-    public ContasReceber cadastrarContasReceber(Venda venda) {
+    public void cadastrarContasReceber(Venda venda) {
 
         getVendaById(venda.getId());
 
@@ -93,12 +97,15 @@ public class VendaService {
             valorTotal = valorTotal.add(valorProduto);
         }
 
-        ContasReceber contasReceber = new ContasReceber();
-        contasReceber.setStatusPagamento("Pago");
-        contasReceber.setIdVenda(venda);
-        contasReceber.setValor(valorTotal);
-        contasReceber.setDataVencimento(Instant.now().plus(Duration.ofDays(1)));
-
-        return  contasReceberRepository.saveAndFlush(contasReceber);
+        for(int i = 1; i <= venda.getParcelas(); i++) {
+            ContasReceber contasReceber = new ContasReceber();
+            contasReceber.setStatusPagamento("A Receber");
+            contasReceber.setIdVenda(venda);
+            contasReceber.setValorParcela(valorTotal.divide(BigDecimal.valueOf(venda.getParcelas()), 2, RoundingMode.HALF_UP));
+            contasReceber.setValorTotal(valorTotal);
+            contasReceber.setDataVencimento(Instant.now().plus(Duration.ofDays(30L * i)));
+            contasReceber.setComissaoVenda(valorTotal.multiply(BigDecimal.valueOf(0.10)));
+            contasReceberRepository.saveAndFlush(contasReceber);
+        }
     }
 }

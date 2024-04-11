@@ -29,8 +29,8 @@ public class FornecedorService {
     @Transactional
     public Fornecedor cadastrar(FornecedorRequest request) {
 
-        Fornecedor empresa = FornecedorMapper.INSTANCE.requestToEntity(request);
-        return  repository.saveAndFlush(empresa);
+        Fornecedor fornecedor = FornecedorMapper.INSTANCE.requestToEntity(request);
+        return  repository.saveAndFlush(fornecedor);
     }
 
 

@@ -39,6 +39,10 @@ public class UsuarioService {
         return repositoy.findById(id).orElseThrow(() -> new NotFoundException("Usuario não encontrado"));
     }
 
+    public Usuario getUsuarioByEmailAndSenha(String email, String senha){
+        return repositoy.findByEmailAndSenha(email, senha).orElse(null);
+    }
+
     public List<Usuario> getAllUsuarios() {
         return repositoy.findAll();
     }

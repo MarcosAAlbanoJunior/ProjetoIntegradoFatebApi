@@ -26,8 +26,15 @@ public class Usuario {
     @Column(name = "email")
     private String email;
 
+    @Column(name = "senha")
+    private String senha;
+
     @Column(name = "endereco")
     private String endereco;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "id_tipo_usuario")
+    private Empresa idUsuario;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_empresa")

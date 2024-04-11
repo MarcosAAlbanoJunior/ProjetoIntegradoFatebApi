@@ -11,6 +11,6 @@ import java.util.List;
  */
 
 public record VendaRequest(Integer idCliente, Integer idUsuario,
-                           List<ProdutoVendaRequest> produtosVenda) implements Serializable {
+                           List<ProdutoVendaRequest> produtosVenda, String tipoPagamento, Integer parcelas) implements Serializable {
 
 }

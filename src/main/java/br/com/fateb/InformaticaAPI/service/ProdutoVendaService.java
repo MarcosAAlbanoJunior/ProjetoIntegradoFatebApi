@@ -1,6 +1,7 @@
 package br.com.fateb.InformaticaAPI.service;
 
 import br.com.fateb.InformaticaAPI.dto.request.ProdutoVendaRequest;
+import br.com.fateb.InformaticaAPI.dto.response.ProdutosMaisVendidosResponse;
 import br.com.fateb.InformaticaAPI.entity.*;
 import br.com.fateb.InformaticaAPI.entity.id.ProdutosVendaId;
 import br.com.fateb.InformaticaAPI.exception.NotFoundException;
@@ -65,5 +66,9 @@ public class ProdutoVendaService {
 
     public List<ProdutosVenda> getProdutosVendaPeloIdVenda(Integer idVenda) {
         return repositoy.produtosDeUmaVenda(idVenda);
+    }
+
+    public List<ProdutosMaisVendidosResponse> consultarProdutosMaisVendidos(){
+        return repositoy.findProdutosMaisVendidos();
     }
 }
