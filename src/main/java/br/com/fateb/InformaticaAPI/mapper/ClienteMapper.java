@@ -11,6 +11,4 @@ public abstract class ClienteMapper {
 
     public static final ClienteMapper INSTANCE = Mappers.getMapper(ClienteMapper.class);
 
-    @Mapping(target = "idCidade", ignore = true)
-    public abstract Cliente requestToEntity(ClienteRequest request);
 }

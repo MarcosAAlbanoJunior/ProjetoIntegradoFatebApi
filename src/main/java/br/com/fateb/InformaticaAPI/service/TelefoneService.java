@@ -2,12 +2,12 @@ package br.com.fateb.InformaticaAPI.service;
 
 import br.com.fateb.InformaticaAPI.dto.request.TelefoneRequest;
 import br.com.fateb.InformaticaAPI.entity.Cliente;
-import br.com.fateb.InformaticaAPI.entity.TelefonesPessoa;
+import br.com.fateb.InformaticaAPI.entity.ClienteTelefone;
 import br.com.fateb.InformaticaAPI.exception.NotFoundException;
 import br.com.fateb.InformaticaAPI.mapper.TelefoneMapper;
-import br.com.fateb.InformaticaAPI.repository.TelefonesPessoasRepository;
+import br.com.fateb.InformaticaAPI.repository.ClienteTelefoneRepository;
+import br.com.fateb.InformaticaAPI.utils.AtualizarEntidade;
 import jakarta.transaction.Transactional;
-import org.mapstruct.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,37 +16,48 @@ import java.util.List;
 @Service
 public class TelefoneService {
 
-    TelefonesPessoasRepository repository;
-
-    FornecedorService fornecedorService;
+    ClienteTelefoneRepository repository;
 
     ClienteService clienteService;
 
+    AtualizarEntidade atualizarEntidade;
+
     @Autowired
-    public void TelefoneRepository(TelefonesPessoasRepository repository, FornecedorService fornecedorService,  ClienteService clienteService) {
+    public void TelefoneRepository(ClienteTelefoneRepository repository, ClienteService clienteService, AtualizarEntidade atualizarEntidade) {
         this.repository = repository;
-        this.fornecedorService = fornecedorService;
         this.clienteService = clienteService;
+        this.atualizarEntidade = atualizarEntidade;
     }
 
     @Transactional
-    public void cadastrar(TelefoneRequest request) {
+    public void cadastrar(ClienteTelefone request) {
 
-        if (request.tipoPessoa().equals("Fornecedor")){
-            fornecedorService.getFornecedorById(request.idPessoa());
-        }
-        else {
-            clienteService.getClienteById(request.idPessoa());
-        }
+        Cliente cliente = clienteService.getClienteById(request.getIdCliente().getId());
 
-        repository.saveAndFlush(TelefoneMapper.INSTANCE.requestToEntity(request));
+        request.setIdCliente(cliente);
+
+        repository.saveAndFlush(request);
+
     }
 
-    public TelefonesPessoa getTelefoneById(Integer id){
+    @Transactional
+    public void atualizarTelefone(ClienteTelefone request) {
+
+        ClienteTelefone existente = getTelefoneById(request.getId());
+
+        clienteService.getClienteById(request.getIdCliente().getId());
+
+        atualizarEntidade.atualizarEntidade(request, existente);
+
+        repository.saveAndFlush(request);
+
+    }
+
+    public ClienteTelefone getTelefoneById(Integer id){
         return repository.findById(id).orElseThrow(() -> new NotFoundException("Telefone não encontrado"));
     }
 
-    public List<TelefonesPessoa> getAllTelefones() {
+    public List<ClienteTelefone> getAllTelefones() {
         return repository.findAll();
     }
 }

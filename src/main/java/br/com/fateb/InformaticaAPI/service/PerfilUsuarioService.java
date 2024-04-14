@@ -3,56 +3,61 @@ package br.com.fateb.InformaticaAPI.service;
 import br.com.fateb.InformaticaAPI.dto.request.AutenticacaoRequest;
 import br.com.fateb.InformaticaAPI.dto.request.PerfilUsuarioRequest;
 import br.com.fateb.InformaticaAPI.dto.response.AutenticacaoResponse;
-import br.com.fateb.InformaticaAPI.entity.Empresa;
 import br.com.fateb.InformaticaAPI.entity.PerfilUsuario;
 import br.com.fateb.InformaticaAPI.entity.Usuario;
 import br.com.fateb.InformaticaAPI.exception.NotFoundException;
-import br.com.fateb.InformaticaAPI.mapper.UsuarioMapper;
 import br.com.fateb.InformaticaAPI.repository.PerfilUsuarioRepository;
+import br.com.fateb.InformaticaAPI.utils.AtualizarEntidade;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
 @Service
 public class PerfilUsuarioService {
 
-    private PerfilUsuarioRepository repositoy;
+    PerfilUsuarioRepository repository;
 
-    private UsuarioService usuarioService;
+    AtualizarEntidade atualizarEntidade;
+
+    UsuarioService usuarioService;
 
     @Autowired
-    public void PerfilUsuarioRepository(PerfilUsuarioRepository repositoy, UsuarioService usuarioService) {
-        this.repositoy = repositoy;
+    public void PerfilUsuarioRepository(PerfilUsuarioRepository repository, UsuarioService usuarioService, AtualizarEntidade atualizarEntidade) {
+        this.repository = repository;
         this.usuarioService = usuarioService;
+        this.atualizarEntidade = atualizarEntidade;
     }
 
     @Transactional
-    public PerfilUsuario cadastrar(PerfilUsuarioRequest request) {
-
-        PerfilUsuario perfilUsuario = new PerfilUsuario();
-        perfilUsuario.setTipoUsuario(request.tipoUsuario());
-        return  repositoy.saveAndFlush(perfilUsuario);
+    public PerfilUsuario atualizarPerfilUsuario(PerfilUsuario request) {
+        PerfilUsuario existente = getPerfilUsuarioById(request.getId());
+        atualizarEntidade.atualizarEntidade(request, existente);
+        return  repository.saveAndFlush(request);
     }
 
-    public PerfilUsuario getUsuarioById(Integer id){
-        return repositoy.findById(id).orElseThrow(() -> new NotFoundException("Usuario não encontrado"));
+    @Transactional
+    public PerfilUsuario cadastrar(PerfilUsuario request) {
+
+        return  repository.saveAndFlush(request);
     }
 
-    public AutenticacaoResponse autenticar(AutenticacaoRequest request){
-
-       Usuario usuario = usuarioService.getUsuarioByEmailAndSenha(request.email(), request.senha());
-
-        AutenticacaoResponse response;
-       if (usuario != null){
-           response = new AutenticacaoResponse("Autenticado");
-       }
-       else {
-           response = new AutenticacaoResponse("Não Autenticado");
-       }
-
-       return response;
-
+    public PerfilUsuario getPerfilUsuarioById(Integer id){
+        return repository.findById(id).orElseThrow(() -> new NotFoundException("Usuario não encontrado"));
     }
+
+//    public AutenticacaoResponse autenticar(AutenticacaoRequest request){
+//
+//       Usuario usuario = usuarioService.getUsuarioByEmailAndSenha(request.email(), request.senha());
+//
+//        AutenticacaoResponse response;
+//       if (usuario != null){
+//           response = new AutenticacaoResponse("Autenticado");
+//       }
+//       else {
+//           response = new AutenticacaoResponse("Não Autenticado");
+//       }
+//
+//       return response;
+//
+//    }
 }

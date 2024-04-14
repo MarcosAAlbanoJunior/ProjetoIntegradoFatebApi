@@ -4,8 +4,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.math.BigDecimal;
-import java.time.Instant;
+import java.time.LocalDate;
 
 @Getter
 @Setter
@@ -14,27 +13,14 @@ import java.time.Instant;
 public class ContasReceber {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_conta", nullable = false)
+    @Column(name = "id", nullable = false)
     private Integer id;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "id_venda")
-    private Venda idVenda;
+    @Column(name = "data_emissao", nullable = false)
+    private LocalDate dataEmissao;
 
-    @Column(name = "valor_total", precision = 10, scale = 2)
-    private BigDecimal valorTotal;
-
-    @Column(name = "valor_parcela", precision = 10, scale = 2)
-    private BigDecimal valorParcela;
-
-
-    @Column(name = "data_vencimento")
-    private Instant dataVencimento;
-
-    @Column(name = "status_pagamento")
-    private String statusPagamento;
-
-    @Column(name = "comissao_venda")
-    private BigDecimal comissaoVenda;
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "id_pedido", nullable = false)
+    private Pedido idPedido;
 
 }

@@ -5,6 +5,7 @@ import br.com.fateb.InformaticaAPI.entity.*;
 import br.com.fateb.InformaticaAPI.exception.NotFoundException;
 import br.com.fateb.InformaticaAPI.mapper.ProdutoMapper;
 import br.com.fateb.InformaticaAPI.repository.ProdutoRepository;
+import br.com.fateb.InformaticaAPI.utils.AtualizarEntidade;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,48 +15,60 @@ import java.util.List;
 @Service
 public class ProdutoService {
 
-    private ProdutoRepository repositoy;
+    ProdutoRepository repository;
 
-    private FornecedorService fornecedorService;
+    FornecedorService fornecedorService;
 
-    private CategoriaService categoriaService;
+    CategoriaService categoriaService;
+
+    AtualizarEntidade atualizarEntidade;
 
     @Autowired
-    public void ProdutoRepository(ProdutoRepository repositoy, FornecedorService fornecedorService, CategoriaService categoriaService) {
-        this.repositoy = repositoy;
+    public void ProdutoRepository(ProdutoRepository repository, FornecedorService fornecedorService, CategoriaService categoriaService,
+                                  AtualizarEntidade atualizarEntidade) {
+        this.repository = repository;
         this.fornecedorService = fornecedorService;
         this.categoriaService = categoriaService;
+        this.atualizarEntidade = atualizarEntidade;
     }
 
     @Transactional
-    public Produto cadastrar(ProdutoRequest request) {
+    public Produto cadastrar(Produto request) {
 
-        Fornecedor fornecedor = fornecedorService.getFornecedorById(request.idFornecedor());
+        Fornecedor fornecedor = fornecedorService.getFornecedorById(request.getIdFornecedor().getId());
 
-        Categoria categoria = categoriaService.getCategoriaById(request.idCategoria());
+        Categoria categoria = categoriaService.getCategoriaById(request.getIdCategoria().getId());
 
-        Produto produto = ProdutoMapper.INSTANCE.requestToEntity(request);
-        produto.setIdFornecedor(fornecedor);
-        produto.setIdCategoria(categoria);
+        request.setIdFornecedor(fornecedor);
 
-        return  repositoy.saveAndFlush(produto);
+        request.setIdCategoria(categoria);
+
+        return  repository.saveAndFlush(request);
     }
 
     @Transactional
-    public void adicionarProduto(Integer idProduto, Integer quantidade){
-        repositoy.adicionarProduto(idProduto, quantidade);
-    }
+    public Produto atualizarProduto(Produto request) {
 
-    @Transactional
-    public void subtrairProduto(Integer idProduto, Integer quantidade){
-        repositoy.subtrairProduto(idProduto, quantidade);
+        Produto existente = getProdutoById(request.getId());
+
+        if (request.getIdFornecedor().getId() != null) {
+            Fornecedor fornecedor = fornecedorService.getFornecedorById(request.getIdFornecedor().getId());
+        }
+
+        if(request.getIdCategoria().getId() != null) {
+            Categoria categoria = categoriaService.getCategoriaById(request.getIdCategoria().getId());
+        }
+
+        atualizarEntidade.atualizarEntidade(request, existente);
+
+        return  repository.saveAndFlush(request);
     }
 
     public Produto getProdutoById(Integer id){
-        return repositoy.findById(id).orElseThrow(() -> new NotFoundException("Produto não encontrado"));
+        return repository.findById(id).orElseThrow(() -> new NotFoundException("Produto não encontrado"));
     }
 
     public List<Produto> getAllProdutos() {
-        return repositoy.findAll();
+        return repository.findAll();
     }
 }

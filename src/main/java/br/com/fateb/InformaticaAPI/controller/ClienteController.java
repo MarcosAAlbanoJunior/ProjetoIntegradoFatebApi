@@ -38,9 +38,16 @@ public class ClienteController {
 
     @Operation(summary = "Cadastra um Cliente")
     @PostMapping
-    public ResponseEntity<Cliente> cadastrarCliente(@RequestBody ClienteRequest request) {
+    public ResponseEntity<Cliente> cadastrarCliente(@RequestBody Cliente request) {
         Cliente cliente = service.cadastrar(request);
         return ResponseEntity.status(HttpStatus.CREATED).body(cliente);
+    }
+
+    @Operation(summary = "Atualizar um Cliente")
+    @PutMapping
+    public ResponseEntity<Cliente> atualizarCliente(@RequestBody Cliente request) {
+        service.atualizarEntidade(request);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
 }

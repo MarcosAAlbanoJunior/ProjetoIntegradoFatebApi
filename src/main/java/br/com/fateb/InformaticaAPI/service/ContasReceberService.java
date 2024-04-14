@@ -1,22 +1,18 @@
 package br.com.fateb.InformaticaAPI.service;
 
-import br.com.fateb.InformaticaAPI.dto.request.VendaRequest;
 import br.com.fateb.InformaticaAPI.dto.response.ComissaoResponse;
 import br.com.fateb.InformaticaAPI.dto.response.ContasReceberResponse;
-import br.com.fateb.InformaticaAPI.dto.response.ProdutoResponse;
+import br.com.fateb.InformaticaAPI.dto.response.PedidoResponse;
 import br.com.fateb.InformaticaAPI.entity.*;
 import br.com.fateb.InformaticaAPI.exception.NotFoundException;
 import br.com.fateb.InformaticaAPI.mapper.ContasReceberMapper;
-import br.com.fateb.InformaticaAPI.mapper.ProdutoVendaMapper;
 import br.com.fateb.InformaticaAPI.repository.ContasReceberRepository;
-import br.com.fateb.InformaticaAPI.repository.VendaRepository;
+import br.com.fateb.InformaticaAPI.utils.AtualizarEntidade;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.math.BigDecimal;
-import java.time.Duration;
-import java.time.Instant;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,57 +20,52 @@ import java.util.List;
 public class ContasReceberService {
 
 
-    private ContasReceberRepository repository;
+    ContasReceberRepository repository;
 
-    private VendaService vendaService;
 
-    private ProdutoVendaService produtoVendaService;
+    AtualizarEntidade atualizarEntidade;
+
+    ContasReceberParcelaService contasReceberParcelaService;
+
+
 
     @Autowired
-    public void VendaRepository(ContasReceberRepository repository, VendaService vendaService, ProdutoVendaService produtoVendaService) {
+    public void PedidoRepository(ContasReceberRepository repository, AtualizarEntidade atualizarEntidade,
+                                 PedidoService pedidoService, ContasReceberParcelaService contasReceberParcelaService) {
         this.repository = repository;
-        this.vendaService = vendaService;
-        this.produtoVendaService = produtoVendaService;
+        this.atualizarEntidade = atualizarEntidade;
+        this.contasReceberParcelaService = contasReceberParcelaService;
     }
 
-    public ContasReceberResponse getContasReceberById(Integer id){
-         ContasReceberResponse response = ContasReceberMapper.INSTANCE.entityToResponse(repository.findById(id).orElseThrow(() -> new NotFoundException("Contas a Receber não encontrada")));
+    public ContasReceber getContasReceberById(Integer id){
 
-        List<ProdutosVenda> produtosVendas = produtoVendaService.getProdutosVendaPeloIdVenda(response.getIdVenda());
-
-        List<ProdutoResponse> listaProdutoResponse = new ArrayList<>();
-
-        for(ProdutosVenda produtosVenda : produtosVendas){
-            listaProdutoResponse.add(ProdutoVendaMapper.INSTANCE.entityToResponse(produtosVenda));
-        }
-
-        return response;
+        return repository.findById(id).orElseThrow(() -> new NotFoundException("Contas a receber não encontrada"));
     }
 
     public List<ContasReceber> getAllContasReceber() {
         return repository.findAll();
     }
 
-    public List<ContasReceberResponse> getAllContasReceberResponse() {
 
-        List<ContasReceber> listaEntities = repository.findAll();
-        List<ContasReceberResponse> resposta = new ArrayList<>();
-        ContasReceberResponse itemLista = new ContasReceberResponse();
+    @Transactional
+    public void atualizarContasReceber(ContasReceber contasReceber) {
 
-        for(ContasReceber x : listaEntities) {
-            itemLista = ContasReceberMapper.INSTANCE.entityToResponse(x);
-            resposta.add(itemLista);
-        }
+        ContasReceber existente = getContasReceberById(contasReceber.getId());
+        atualizarEntidade.atualizarEntidade(contasReceber, existente);
 
-        return resposta;
+        repository.saveAndFlush(contasReceber);
     }
 
-    public List<ComissaoResponse> buscarComissoesData(String data){
+    @Transactional
+    public void cadastrarContasReceber(Pedido pedido) {
 
-        String[] partes = data.split("-");
-        int ano = Integer.parseInt(partes[0]);
-        int mes = Integer.parseInt(partes[1]);
+        ContasReceber contasReceber = new ContasReceber();
+        contasReceber.setDataEmissao(LocalDate.now());
+        contasReceber.setIdPedido(pedido);
 
-        return repository.findComissaoPorUsuarioNoMesEAno(ano, mes);
+        repository.saveAndFlush(contasReceber);
+
+        contasReceberParcelaService.cadastrarContasReceberParcela(contasReceber);
+
     }
 }

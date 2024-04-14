@@ -11,33 +11,17 @@ import lombok.Setter;
 public class Usuario {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_usuario", nullable = false)
+    @Column(name = "id", nullable = false)
     private Integer id;
 
-    @Column(name = "nome_usuario")
-    private String nomeUsuario;
+    @Column(name = "login", nullable = false, length = 100)
+    private String login;
 
-    @Column(name = "cpf_usuario")
-    private String cpfUsuario;
-
-    @Column(name = "telefone")
-    private String telefone;
-
-    @Column(name = "email")
-    private String email;
-
-    @Column(name = "senha")
+    @Column(name = "senha", nullable = false, length = 100)
     private String senha;
 
-    @Column(name = "endereco")
-    private String endereco;
-
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "id_tipo_usuario")
-    private Empresa idUsuario;
-
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "id_empresa")
-    private Empresa idEmpresa;
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
+    @JoinColumn(name = "id_perfil_usuario", nullable = false)
+    private PerfilUsuario idPerfilUsuario;
 
 }

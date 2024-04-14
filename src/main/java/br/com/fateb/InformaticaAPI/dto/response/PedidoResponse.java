@@ -7,7 +7,7 @@ import java.time.Instant;
 
 @Getter
 @Setter
-public class VendaResponse {
+public class PedidoResponse {
 
     private Integer id;
     private Instant dataVenda;

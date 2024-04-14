@@ -9,13 +9,12 @@ import lombok.Setter;
 @Entity
 @Table(name = "perfil_usuario")
 public class PerfilUsuario {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_tipo_usuario", nullable = false)
+    @Column(name = "id", nullable = false)
     private Integer id;
 
-    @Column(name = "tipo_usuario")
-    private String tipoUsuario;
+    @Column(name = "nome_perfil", nullable = false, length = 100)
+    private String nomePerfil;
 
 }

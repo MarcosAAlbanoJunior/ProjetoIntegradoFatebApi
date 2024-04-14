@@ -9,5 +9,4 @@ import org.mapstruct.factory.Mappers;
 public abstract class CidadeMapper {
 
     public static final CidadeMapper INSTANCE = Mappers.getMapper(CidadeMapper.class);
-    public abstract Cidade requestToEntity(CidadeRequest request);
 }

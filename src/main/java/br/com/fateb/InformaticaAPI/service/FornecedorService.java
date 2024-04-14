@@ -1,15 +1,12 @@
 package br.com.fateb.InformaticaAPI.service;
 
 import br.com.fateb.InformaticaAPI.dto.request.FornecedorRequest;
-import br.com.fateb.InformaticaAPI.dto.request.FornecedorRequest;
-import br.com.fateb.InformaticaAPI.entity.Cliente;
-import br.com.fateb.InformaticaAPI.entity.Fornecedor;
+import br.com.fateb.InformaticaAPI.entity.ContasReceber;
 import br.com.fateb.InformaticaAPI.entity.Fornecedor;
 import br.com.fateb.InformaticaAPI.exception.NotFoundException;
 import br.com.fateb.InformaticaAPI.mapper.FornecedorMapper;
-import br.com.fateb.InformaticaAPI.repository.CidadeRepository;
-import br.com.fateb.InformaticaAPI.repository.ClienteRepository;
 import br.com.fateb.InformaticaAPI.repository.FornecedorRepository;
+import br.com.fateb.InformaticaAPI.utils.AtualizarEntidade;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,16 +18,28 @@ public class FornecedorService {
 
     FornecedorRepository repository;
 
+    AtualizarEntidade atualizarEntidade;
+
     @Autowired
-    public void FornecedorRepository(FornecedorRepository repository) {
+    public void FornecedorRepository(FornecedorRepository repository, AtualizarEntidade atualizarEntidade) {
         this.repository = repository;
+        this.atualizarEntidade = atualizarEntidade;
     }
 
     @Transactional
-    public Fornecedor cadastrar(FornecedorRequest request) {
+    public Fornecedor cadastrar(Fornecedor request) {
 
-        Fornecedor fornecedor = FornecedorMapper.INSTANCE.requestToEntity(request);
-        return  repository.saveAndFlush(fornecedor);
+        return  repository.saveAndFlush(request);
+    }
+
+    @Transactional
+    public void atualizarFornecedor(Fornecedor fornecedor) {
+
+        Fornecedor existente = getFornecedorById(fornecedor.getId());
+
+        atualizarEntidade.atualizarEntidade(fornecedor, existente);
+
+        repository.saveAndFlush(fornecedor);
     }
 
 

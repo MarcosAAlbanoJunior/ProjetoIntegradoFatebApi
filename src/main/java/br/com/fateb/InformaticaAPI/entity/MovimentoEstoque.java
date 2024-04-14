@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.time.Instant;
+import java.time.LocalDate;
 
 @Getter
 @Setter
@@ -13,21 +13,21 @@ import java.time.Instant;
 public class MovimentoEstoque {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_movimento", nullable = false)
+    @Column(name = "id", nullable = false)
     private Integer id;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "tipo_movimento")
-    private TipoMovimento tipoMovimento;
-
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "id_produto", nullable = false)
     private Produto idProduto;
 
-    @Column(name = "quantidade")
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
+    @JoinColumn(name = "id_tipo_movimento", nullable = false)
+    private TipoMovimentoEstoque idTipoMovimento;
+
+    @Column(name = "quantidade", nullable = false)
     private Integer quantidade;
 
-    @Column(name = "data_movimento")
-    private Instant dataMovimento;
+    @Column(name = "data_movimento", nullable = false)
+    private LocalDate dataMovimento;
 
 }

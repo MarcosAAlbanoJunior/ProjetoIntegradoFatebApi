@@ -1,9 +1,5 @@
 package br.com.fateb.InformaticaAPI.dto.request;
 
-import br.com.fateb.InformaticaAPI.entity.Fornecedor;
-import lombok.EqualsAndHashCode;
-import lombok.Value;
-
 import java.io.Serializable;
 
 /**

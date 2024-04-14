@@ -9,28 +9,25 @@ import java.math.BigDecimal;
 @Getter
 @Setter
 @Entity
-@Table(name = "produtos")
+@Table(name = "produto")
 public class Produto {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_produto")
+    @Column(name = "id", nullable = false)
     private Integer id;
 
-    @Column(name = "nome_produto")
+    @Column(name = "nome_produto", nullable = false, length = 100)
     private String nomeProduto;
 
-    @Column(name = "preco", precision = 10, scale = 2)
-    private BigDecimal preco;
-
-    @Column(name = "quantidadeEstoque")
-    private Integer quantidadeEstoque;
-
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "id_categoria")
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "id_categoria", nullable = false)
     private Categoria idCategoria;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "id_fornecedor")
+    @Column(name = "preco", nullable = false)
+    private BigDecimal preco;
+
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "id_fornecedor", nullable = false)
     private Fornecedor idFornecedor;
 
 }
