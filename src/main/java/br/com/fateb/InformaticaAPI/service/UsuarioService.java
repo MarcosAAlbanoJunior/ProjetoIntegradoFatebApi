@@ -59,7 +59,7 @@ public class UsuarioService {
     }
 
     public Usuario getUsuarioByEmailAndSenha(String email, String senha){
-        return repositoy.findByEmailAndSenha(email, senha).orElse(null);
+        return repositoy.findByLoginAndSenha(email, senha).orElse(null);
     }
 
     public List<Usuario> getAllUsuarios() {

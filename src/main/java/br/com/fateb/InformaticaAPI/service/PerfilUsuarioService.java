@@ -19,12 +19,10 @@ public class PerfilUsuarioService {
 
     AtualizarEntidade atualizarEntidade;
 
-    UsuarioService usuarioService;
 
     @Autowired
-    public void PerfilUsuarioRepository(PerfilUsuarioRepository repository, UsuarioService usuarioService, AtualizarEntidade atualizarEntidade) {
+    public void PerfilUsuarioRepository(PerfilUsuarioRepository repository, AtualizarEntidade atualizarEntidade) {
         this.repository = repository;
-        this.usuarioService = usuarioService;
         this.atualizarEntidade = atualizarEntidade;
     }
 
