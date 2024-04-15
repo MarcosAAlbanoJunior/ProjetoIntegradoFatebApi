@@ -49,4 +49,5 @@ public class EmpresaController {
         Empresa empresa = service.atualizarEmpresa(request);
         return ResponseEntity.status(HttpStatus.CREATED).body(empresa);
     }
+
 }
