@@ -39,7 +39,7 @@ public class FornecedorService {
 
         atualizarEntidade.atualizarEntidade(fornecedor, existente);
 
-        repository.saveAndFlush(fornecedor);
+        repository.saveAndFlush(existente);
     }
 
 

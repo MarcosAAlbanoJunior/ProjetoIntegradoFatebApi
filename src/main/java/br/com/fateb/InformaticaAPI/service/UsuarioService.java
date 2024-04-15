@@ -1,6 +1,8 @@
 package br.com.fateb.InformaticaAPI.service;
 
+import br.com.fateb.InformaticaAPI.dto.request.AutenticacaoRequest;
 import br.com.fateb.InformaticaAPI.dto.request.UsuarioRequest;
+import br.com.fateb.InformaticaAPI.dto.response.AutenticacaoResponse;
 import br.com.fateb.InformaticaAPI.entity.Empresa;
 import br.com.fateb.InformaticaAPI.entity.PerfilUsuario;
 import br.com.fateb.InformaticaAPI.entity.Usuario;
@@ -64,5 +66,22 @@ public class UsuarioService {
 
     public List<Usuario> getAllUsuarios() {
         return repositoy.findAll();
+    }
+
+    public AutenticacaoResponse autenticar(AutenticacaoRequest request){
+
+       Usuario usuario = getUsuarioByEmailAndSenha(request.email(), request.senha());
+
+       AutenticacaoResponse response;
+
+       if (usuario != null){
+           response = new AutenticacaoResponse("Autenticado");
+       }
+       else {
+           response = new AutenticacaoResponse("Senha ou Email não encontrados");
+       }
+
+       return response;
+
     }
 }

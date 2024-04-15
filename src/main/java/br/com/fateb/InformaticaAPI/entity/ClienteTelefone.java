@@ -15,9 +15,9 @@ public class ClienteTelefone {
     private Integer id;
 
     @Column(name = "numero_telefone", nullable = false)
-    private Integer numeroTelefone;
+    private String numeroTelefone;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "id_cliente", nullable = false)
     private Cliente idCliente;
 

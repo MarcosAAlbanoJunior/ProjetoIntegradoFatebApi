@@ -1,6 +1,7 @@
 package br.com.fateb.InformaticaAPI.service;
 
 import br.com.fateb.InformaticaAPI.dto.request.EmpresaRequest;
+import br.com.fateb.InformaticaAPI.entity.Cidade;
 import br.com.fateb.InformaticaAPI.entity.Empresa;
 import br.com.fateb.InformaticaAPI.exception.NotFoundException;
 import br.com.fateb.InformaticaAPI.mapper.EmpresaMapper;
@@ -17,16 +18,21 @@ public class EmpresaService {
 
     EmpresaRepository repository;
 
+    CidadeService cidadeService;
+
     AtualizarEntidade atualizarEntidade;
 
     @Autowired
-    public void EmpresaRepository(EmpresaRepository repository, AtualizarEntidade atualizarEntidade) {
+    public void EmpresaRepository(EmpresaRepository repository, AtualizarEntidade atualizarEntidade, CidadeService cidadeService) {
         this.repository = repository;
         this.atualizarEntidade = atualizarEntidade;
+        this.cidadeService = cidadeService;
     }
 
     @Transactional
     public Empresa cadastrar(Empresa request) {
+
+        Cidade cidade = cidadeService.getCidadeById(request.getIdCidade().getId());
 
         return  repository.saveAndFlush(request);
     }
@@ -36,7 +42,7 @@ public class EmpresaService {
 
         Empresa existente = getEmpresaById(request.getId());
         atualizarEntidade.atualizarEntidade(request, existente);
-        return  repository.saveAndFlush(request);
+        return  repository.saveAndFlush(existente);
     }
 
     public Empresa getEmpresaById(Integer id){

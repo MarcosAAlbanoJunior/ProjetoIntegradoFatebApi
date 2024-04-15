@@ -49,7 +49,7 @@ public class TelefoneService {
 
         atualizarEntidade.atualizarEntidade(request, existente);
 
-        repository.saveAndFlush(request);
+        repository.saveAndFlush(existente);
 
     }
 

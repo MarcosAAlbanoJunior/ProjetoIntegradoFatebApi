@@ -22,31 +22,31 @@ public class CategoriaController {
         this.service = service;
     }
 
-//    @Operation(summary = "Retorna uma Categoria com o iD informado")
-//    @GetMapping("/{id}")
-//    public ResponseEntity<Categoria> getById(@PathVariable("id") Integer id) {
-//        Categoria categoria = service.getCategoriaById(id);
-//        return ResponseEntity.ok(categoria);
-//    }
-//
-//    @Operation(summary = "Retorna todos as Categorias")
-//    @GetMapping
-//    public ResponseEntity<List<Categoria>> getCategorias() {
-//        List<Categoria> categorias = service.getAllCategorias();
-//        return ResponseEntity.ok(categorias);
-//    }
-//
-//    @Operation(summary = "Cadastra um Categoria")
-//    @PostMapping
-//    public ResponseEntity<Categoria> cadastrarCategoria(@RequestBody CategoriaRequest request) {
-//        Categoria categoria = service.cadastrar(request);
-//        return ResponseEntity.status(HttpStatus.CREATED).body(categoria);
-//    }
+    @Operation(summary = "Retorna uma Categoria com o iD informado")
+    @GetMapping("/{id}")
+    public ResponseEntity<Categoria> getById(@PathVariable("id") Integer id) {
+        Categoria categoria = service.getCategoriaById(id);
+        return ResponseEntity.ok(categoria);
+    }
 
-//    @Operation(summary = "Atualizar uma Categoria")
-//    @PutMapping
-//    public ResponseEntity<Categoria> cadastrarCategoria(@RequestBody CategoriaRequest request) {
-//        Categoria categoria = service.cadastrar(request);
-//        return ResponseEntity.status(HttpStatus.CREATED).body(categoria);
-//    }
+    @Operation(summary = "Retorna todos as Categorias")
+    @GetMapping
+    public ResponseEntity<List<Categoria>> getCategorias() {
+        List<Categoria> categorias = service.getAllCategorias();
+        return ResponseEntity.ok(categorias);
+    }
+
+    @Operation(summary = "Cadastra um Categoria")
+    @PostMapping
+    public ResponseEntity<Categoria> cadastrarCategoria(@RequestBody Categoria request) {
+        Categoria categoria = service.cadastrar(request);
+        return ResponseEntity.status(HttpStatus.CREATED).body(categoria);
+    }
+
+    @Operation(summary = "Atualizar uma Categoria")
+    @PutMapping
+    public ResponseEntity<Categoria> atualizarCategoria(@RequestBody Categoria request) {
+        Categoria categoria = service.cadastrar(request);
+        return ResponseEntity.status(HttpStatus.CREATED).body(categoria);
+    }
 }

@@ -40,7 +40,7 @@ public class PedidoService {
 
     @Autowired
     public void PedidoRepository(PedidoRepository repositoy, VendedorService vendedorService, ProdutoPedidoService produtoPedidoService,
-                                ClienteService clienteService, AtualizarEntidade atualizarEntidade,
+                                ClienteService clienteService, AtualizarEntidade atualizarEntidade, ContasReceberService contasReceberService,
                                 FormaPagamentoService formaPagamentoService) {
         this.repositoy = repositoy;
         this.vendedorService = vendedorService;
@@ -48,6 +48,8 @@ public class PedidoService {
         this.produtoPedidoService = produtoPedidoService;
         this.atualizarEntidade = atualizarEntidade;
         this.formaPagamentoService = formaPagamentoService;
+        this.contasReceberService = contasReceberService;
+
     }
 
     @Transactional

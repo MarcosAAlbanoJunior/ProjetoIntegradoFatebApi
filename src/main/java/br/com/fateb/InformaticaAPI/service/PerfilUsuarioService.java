@@ -12,6 +12,8 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class PerfilUsuarioService {
 
@@ -43,19 +45,8 @@ public class PerfilUsuarioService {
         return repository.findById(id).orElseThrow(() -> new NotFoundException("Usuario não encontrado"));
     }
 
-//    public AutenticacaoResponse autenticar(AutenticacaoRequest request){
-//
-//       Usuario usuario = usuarioService.getUsuarioByEmailAndSenha(request.email(), request.senha());
-//
-//        AutenticacaoResponse response;
-//       if (usuario != null){
-//           response = new AutenticacaoResponse("Autenticado");
-//       }
-//       else {
-//           response = new AutenticacaoResponse("Não Autenticado");
-//       }
-//
-//       return response;
-//
-//    }
+    public List<PerfilUsuario> getPerfisUsuarios(){
+        return repository.findAll();
+    }
+
 }

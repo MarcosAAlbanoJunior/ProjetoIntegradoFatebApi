@@ -12,6 +12,7 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -30,8 +31,7 @@ public class ContasReceberService {
 
 
     @Autowired
-    public void PedidoRepository(ContasReceberRepository repository, AtualizarEntidade atualizarEntidade,
-                                 PedidoService pedidoService, ContasReceberParcelaService contasReceberParcelaService) {
+    public void PedidoRepository(ContasReceberRepository repository, AtualizarEntidade atualizarEntidade, ContasReceberParcelaService contasReceberParcelaService) {
         this.repository = repository;
         this.atualizarEntidade = atualizarEntidade;
         this.contasReceberParcelaService = contasReceberParcelaService;
@@ -67,5 +67,14 @@ public class ContasReceberService {
 
         contasReceberParcelaService.cadastrarContasReceberParcela(contasReceber);
 
+    }
+
+    public List<ComissaoResponse> buscarComissoesData(String data){
+
+        String[] partes = data.split("-");
+        int ano = Integer.parseInt(partes[0]);
+        int mes = Integer.parseInt(partes[1]);
+
+        return repository.findComissaoPorUsuarioNoMesEAno(ano, mes);
     }
 }

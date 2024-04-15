@@ -51,17 +51,17 @@ public class ProdutoService {
 
         Produto existente = getProdutoById(request.getId());
 
-        if (request.getIdFornecedor().getId() != null) {
+        if (request.getIdFornecedor() != null && request.getIdFornecedor().getId() != null) {
             Fornecedor fornecedor = fornecedorService.getFornecedorById(request.getIdFornecedor().getId());
         }
 
-        if(request.getIdCategoria().getId() != null) {
+        if(request.getIdCategoria() != null && request.getIdCategoria().getId() != null) {
             Categoria categoria = categoriaService.getCategoriaById(request.getIdCategoria().getId());
         }
 
         atualizarEntidade.atualizarEntidade(request, existente);
 
-        return  repository.saveAndFlush(request);
+        return  repository.saveAndFlush(existente);
     }
 
     public Produto getProdutoById(Integer id){

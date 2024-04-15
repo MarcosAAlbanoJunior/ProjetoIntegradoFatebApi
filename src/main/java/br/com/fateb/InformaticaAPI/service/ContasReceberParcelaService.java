@@ -15,6 +15,7 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.Duration;
 import java.time.LocalDate;
+import java.time.Period;
 import java.util.List;
 
 @Service
@@ -31,10 +32,10 @@ public class ContasReceberParcelaService {
 
 
     @Autowired
-    public void PedidoRepository(ContasReceberParcelaRepository repository, AtualizarEntidade atualizarEntidade,
-                                 PedidoService pedidoService) {
+    public void PedidoRepository(ContasReceberParcelaRepository repository, AtualizarEntidade atualizarEntidade, ProdutoPedidoService produtoPedidoService) {
         this.repository = repository;
         this.atualizarEntidade = atualizarEntidade;
+        this.produtoPedidoService = produtoPedidoService;
     }
 
     public ContasReceberParcela getContasReceberParcelaById(Integer id){
@@ -44,6 +45,10 @@ public class ContasReceberParcelaService {
 
     public List<ContasReceberParcela> getAllContasReceberParcela() {
         return repository.findAll();
+    }
+
+    public List<ContasReceberParcela> getAllContasReceberParcelaByPedido(Integer idPedido) {
+        return repository.findByIdContasReceberIdPedidoId(idPedido);
     }
 
 
@@ -58,7 +63,7 @@ public class ContasReceberParcelaService {
 
     @Transactional
     public void cadastrarContasReceberParcela(ContasReceber contasReceber) {
-        ContasReceberParcela contasReceberParcela = new ContasReceberParcela();
+
 
         List<ProdutoPedido> produtosVendas = produtoPedidoService.getProdutoPedidoPeloIdPedido(contasReceber.getIdPedido().getId());
 
@@ -71,8 +76,8 @@ public class ContasReceberParcelaService {
 
 
         for(int i = 1; i <= contasReceber.getIdPedido().getQuantidadeParcelas(); i++) {
-
-            contasReceberParcela.setDataVencimento(LocalDate.now().plus(Duration.ofDays(30L * i)));
+            ContasReceberParcela contasReceberParcela = new ContasReceberParcela();
+            contasReceberParcela.setDataVencimento(LocalDate.now().plus(Period.ofMonths(i)));
             contasReceberParcela.setValor(valorTotal.divide(BigDecimal.valueOf(contasReceber.getIdPedido().getQuantidadeParcelas()), 2, RoundingMode.HALF_UP));
             contasReceberParcela.setIdContasReceber(contasReceber);
             contasReceberParcela.setParcela(i);

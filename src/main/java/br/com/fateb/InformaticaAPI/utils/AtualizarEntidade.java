@@ -7,12 +7,13 @@ import java.lang.reflect.Field;
 
 @Component
 public class AtualizarEntidade {
-    public void atualizarEntidade(Object novaEntidade, Object existente){
-        for (Field field : Cliente.class.getDeclaredFields()) {
+    public void atualizarEntidade(Object novaEntidade, Object existente) {
+        Class<?> clazz = existente.getClass();
+        for (Field field : clazz.getDeclaredFields()) {
             field.setAccessible(true);
             try {
                 Object valor = field.get(novaEntidade);
-                if (valor != null) {
+                if (valor != null) { // Certifique-se de que só atualiza se não for nulo
                     field.set(existente, valor);
                 }
             } catch (IllegalAccessException e) {

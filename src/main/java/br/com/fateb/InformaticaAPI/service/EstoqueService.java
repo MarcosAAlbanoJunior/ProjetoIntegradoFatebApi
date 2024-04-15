@@ -1,5 +1,6 @@
 package br.com.fateb.InformaticaAPI.service;
 
+import br.com.fateb.InformaticaAPI.entity.Empresa;
 import br.com.fateb.InformaticaAPI.entity.Estoque;
 import br.com.fateb.InformaticaAPI.entity.Pedido;
 import br.com.fateb.InformaticaAPI.entity.Produto;
@@ -40,16 +41,9 @@ public class EstoqueService {
 
         request.setIdProduto(produto);
 
+        movimentacaoEstoqueService.cadastrar(produto.getId(), 2, request.getQuantidade(), LocalDate.now());
+
         return  repository.saveAndFlush(request);
-    }
-
-    @Transactional
-    public void atualizarEntidade(Estoque novaEntidade) {
-        Estoque existente = repository.findById(novaEntidade.getId()).orElseThrow(() -> new NotFoundException("Entidade não encontrada"));
-
-        atualizarEntidade.atualizarEntidade(novaEntidade, existente);
-
-        repository.save(existente);
     }
 
     public Estoque getEstoqueById(Integer id){
@@ -72,6 +66,27 @@ public class EstoqueService {
     @Transactional
     public void subtrairProduto(Integer idProduto, Integer quantidade){
         repository.subtrairProduto(idProduto, quantidade);
-        movimentacaoEstoqueService.cadastrar(idProduto, 2, quantidade, LocalDate.now());
+        movimentacaoEstoqueService.cadastrar(idProduto, 1, quantidade, LocalDate.now());
+    }
+
+    @Transactional
+    public Estoque atualizarEestoque(Estoque request) {
+
+        Estoque existente = getEstoqueById(request.getId());
+
+        if(request.getIdProduto() != null && request.getIdProduto().getId() != null){
+            produtoService.getProdutoById(request.getIdProduto().getId());
+        }
+
+        if(request.getQuantidade() > existente.getQuantidade()){
+            movimentacaoEstoqueService.cadastrar(existente.getIdProduto().getId(), 2, request.getQuantidade() - existente.getQuantidade(), LocalDate.now());
+        }
+        if(request.getQuantidade() < existente.getQuantidade()){
+            movimentacaoEstoqueService.cadastrar(existente.getIdProduto().getId(), 1, existente.getQuantidade() - request.getQuantidade(), LocalDate.now());
+        }
+
+        atualizarEntidade.atualizarEntidade(request, existente);
+
+        return  repository.saveAndFlush(existente);
     }
 }

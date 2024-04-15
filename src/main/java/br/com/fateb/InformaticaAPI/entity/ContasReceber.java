@@ -19,7 +19,7 @@ public class ContasReceber {
     @Column(name = "data_emissao", nullable = false)
     private LocalDate dataEmissao;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "id_pedido", nullable = false)
     private Pedido idPedido;
 

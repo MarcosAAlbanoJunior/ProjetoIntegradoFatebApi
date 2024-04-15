@@ -19,14 +19,14 @@ public class Produto {
     @Column(name = "nome_produto", nullable = false, length = 100)
     private String nomeProduto;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "id_categoria", nullable = false)
     private Categoria idCategoria;
 
     @Column(name = "preco", nullable = false)
     private BigDecimal preco;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "id_fornecedor", nullable = false)
     private Fornecedor idFornecedor;
 

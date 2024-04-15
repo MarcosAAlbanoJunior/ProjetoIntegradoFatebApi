@@ -17,7 +17,7 @@ public class ContasReceberParcela {
     @Column(name = "id", nullable = false)
     private Integer id;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "id_contas_receber", nullable = false)
     private ContasReceber idContasReceber;
 

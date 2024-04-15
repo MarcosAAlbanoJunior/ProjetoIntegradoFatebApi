@@ -4,5 +4,6 @@ import lombok.AllArgsConstructor;
 
 import java.math.BigDecimal;
 
-public record ComissaoResponse(Integer idUsuario, String nomeUsuario, BigDecimal comissaoTotal) {
+public record ComissaoResponse(Integer idVendedor, String nomeVendedor, BigDecimal comissaoTotal) {
+
 }

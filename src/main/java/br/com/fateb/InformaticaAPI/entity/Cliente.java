@@ -1,12 +1,16 @@
 package br.com.fateb.InformaticaAPI.entity;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
 @Entity
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "cliente")
 public class Cliente {
     @Id
@@ -26,7 +30,7 @@ public class Cliente {
     @Column(name = "endereco", nullable = false)
     private String endereco;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "id_cidade", nullable = false)
     private Cidade idCidade;
 
