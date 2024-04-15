@@ -16,7 +16,7 @@ public interface ContasReceberRepository extends JpaRepository<ContasReceber, In
             "JOIN Pedido p ON cr.idPedido = p " +
             "JOIN Vendedor v ON p.idVendedor = v " +
             "JOIN ProdutoPedido pp ON pp.idPedido = p " +
-            "WHERE FUNCTION('YEAR', p.dataVenda) = :ano AND FUNCTION('MONTH', p.dataVenda) = :mes " +
+            "WHERE EXTRACT(YEAR FROM p.dataVenda) = :ano AND EXTRACT(MONTH FROM p.dataVenda) = :mes " +
             "GROUP BY v.id, v.nomeVendedor")
     List<ComissaoResponse> findComissaoPorUsuarioNoMesEAno(int ano, int mes);
 
