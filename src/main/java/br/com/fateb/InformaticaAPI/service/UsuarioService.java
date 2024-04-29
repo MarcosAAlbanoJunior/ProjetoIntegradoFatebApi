@@ -12,6 +12,7 @@ import br.com.fateb.InformaticaAPI.repository.UsuarioRepository;
 import br.com.fateb.InformaticaAPI.utils.AtualizarEntidade;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -25,11 +26,15 @@ public class UsuarioService {
 
     AtualizarEntidade atualizarEntidade;
 
+    PasswordEncoder passwordEncoder;
+
     @Autowired
-    public void UsuarioRepository(UsuarioRepository repositoy, AtualizarEntidade atualizarEntidade, PerfilUsuarioService perfilUsuarioService) {
+    public void UsuarioRepository(UsuarioRepository repositoy, AtualizarEntidade atualizarEntidade, PerfilUsuarioService perfilUsuarioService,
+                                  PasswordEncoder passwordEncoder) {
         this.repositoy = repositoy;
         this.atualizarEntidade = atualizarEntidade;
         this.perfilUsuarioService = perfilUsuarioService;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Transactional
@@ -38,6 +43,8 @@ public class UsuarioService {
         PerfilUsuario perfilUsuario = perfilUsuarioService.getPerfilUsuarioById(request.getIdPerfilUsuario().getId());
 
         request.setIdPerfilUsuario(perfilUsuario);
+
+        request.setSenha(passwordEncoder.encode(request.getSenha()));
 
         return  repositoy.saveAndFlush(request);
     }
@@ -56,7 +63,7 @@ public class UsuarioService {
         return  repositoy.save(request);
     }
 
-    public Usuario getUsuarioById(Integer id){
+    public Usuario getUsuarioById(Long id){
         return repositoy.findById(id).orElseThrow(() -> new NotFoundException("Usuario não encontrado"));
     }
 
@@ -83,5 +90,13 @@ public class UsuarioService {
 
        return response;
 
+    }
+
+    public Usuario buscarPorLogin(String login){
+        return repositoy.findByLogin(login).orElseThrow(() -> new NotFoundException("Usuario com este login não encontrado"));
+    }
+
+    public String buscarPerfilPorLogin(String login) {
+        return repositoy.findRoleByLogin(login);
     }
 }

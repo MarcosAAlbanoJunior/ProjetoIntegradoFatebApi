@@ -31,7 +31,7 @@ public class UsuarioController {
 
     @Operation(summary = "Retorna um Usuario com o iD informado")
     @GetMapping("/{id}")
-    public ResponseEntity<Usuario> getByCpf(@PathVariable("id") Integer id) {
+    public ResponseEntity<Usuario> getByCpf(@PathVariable("id") Long id) {
         Usuario usuario = service.getUsuarioById(id);
         return ResponseEntity.ok(usuario);
     }
